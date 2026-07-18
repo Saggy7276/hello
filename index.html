@@ -146,13 +146,14 @@
     noBtn.style.transform = `scale(${shrink})`;
     noBtn.style.opacity = Math.max(0.25, 1 - noCount * 0.18);
     noBtn.textContent = taunts[noCount] || 'no';
+    if (noCount === MAX_NO - 1) noBtn.style.display = 'none';
   });
 
   yesBtn.addEventListener('click', () => {
     localStorage.setItem(STORAGE_KEY, 'y');
     stage.innerHTML = `<div class="celebrate">yay ✨<p>can\'t wait 💛</p></div>`;
     confetti();
-    setTimeout(selfDestruct, 15000);
+    setTimeout(selfDestruct, 25000);
   });
 
   function selfDestruct() {
