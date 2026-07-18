@@ -66,7 +66,7 @@
   #yes:hover { background: var(--coral-dark); }
   #no {
     background: transparent;
-    color: var(--soft);
+    color: var(--ink);
     font-size: 1.25rem;
     border: 1.5px solid var(--soft);
     box-shadow: none;
@@ -106,7 +106,7 @@
 </head>
 <body>
   <div class="stage" id="stage">
-    <h1 class="question">will you go out with me?</h1>
+    <h1 class="question"> Can you Please download me a Reseach Paper Poonam?</h1>
     <div class="buttons">
       <button id="yes">yes</button>
       <button id="no">no</button>
@@ -150,7 +150,7 @@
 
   yesBtn.addEventListener('click', () => {
     localStorage.setItem(STORAGE_KEY, 'y');
-    stage.innerHTML = `<div class="celebrate">yay ✨<p>can\'t wait &lt;3</p></div>`;
+    stage.innerHTML = `<div class="celebrate">yay ✨<p>can\'t wait 💛</p></div>`;
     confetti();
     setTimeout(selfDestruct, 15000);
   });
@@ -159,7 +159,7 @@
     localStorage.setItem(STORAGE_KEY, 'x');
     document.body.classList.add('gone');
     document.title = '';
-    setTimeout(() => { stage.innerHTML = ''; }, 900);
+    setTimeout(() => { stage.innerHTML = ''; }, 1900);
   }
 
   function confetti() {
