@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hi :)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6ee;
+    --ink: #3a1f2b;
+    --coral: #ff6b6b;
+    --coral-dark: #e85555;
+    --soft: #c9a99b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem; overflow: hidden;
+    transition: background 0.9s ease;
+  }
+  .stage {
+    text-align: center;
+    max-width: 90vw;
+    transition: opacity 0.7s ease;
+  }
+  .question {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+    color: var(--ink);
+  }
+  .buttons {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-height: 120px;
+  }
+  button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    padding: 0.9em 2.2em;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.4s ease,
+                font-weight 0.3s ease;
+    box-shadow: 0 4px 14px rgba(58, 31, 43, 0.15);
+  }
+  #yes {
+    background: var(--coral);
+    color: white;
+    font-size: 1.25rem;
+  }
+  #yes:hover { background: var(--coral-dark); }
+  #no {
+    background: transparent;
+    color: var(--soft);
+    font-size: 1.25rem;
+    border: 1.5px solid var(--soft);
+    box-shadow: none;
+  }
+  #no:hover { opacity: 0.7; }
+
+  .celebrate {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(3rem, 10vw, 6rem);
+    color: var(--coral);
+    font-weight: 700;
+  }
+  .celebrate p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* self-destruct: blank page, no trace visible */
+  body.gone { background: white; }
+  body.gone .stage { opacity: 0; pointer-events: none; }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+  .confetti {
+    position: fixed;
+    width: 10px; height: 14px;
+    top: -20px;
+    pointer-events: none;
+    animation: fall linear forwards;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <h1 class="question">will you go out with me?</h1>
+    <div class="buttons">
+      <button id="yes">yes</button>
+      <button id="no">no</button>
+    </div>
+  </div>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const linkId = params.get('id') || 'default';
+  const STORAGE_KEY = 'msg_v1_' + linkId;
+  const MAX_NO = 5;
+  const stage = document.getElementById('stage');
+  const yesBtn = document.getElementById('yes');
+  const noBtn  = document.getElementById('no');
+
+  // If this browser has already answered or hit the limit, show nothing.
+  if (localStorage.getItem(STORAGE_KEY)) {
+    document.body.classList.add('gone');
+    document.title = '';
+  }
+
+  let noCount = 0;
+  let yesScale = 1;
+  const taunts = ['no', 'you sure?', 'reeeally?', 'think again', 'last chance'];
+
+  noBtn.addEventListener('click', () => {
+    noCount++;
+    if (noCount >= MAX_NO) { selfDestruct(); return; }
+
+    // Yes grows and gets bolder each refusal
+    yesScale += 0.4;
+    yesBtn.style.transform = `scale(${yesScale})`;
+    yesBtn.style.fontWeight = '700';
+
+    // No shrinks and fades
+    const shrink = Math.max(0.4, 1 - noCount * 0.15);
+    noBtn.style.transform = `scale(${shrink})`;
+    noBtn.style.opacity = Math.max(0.25, 1 - noCount * 0.18);
+    noBtn.textContent = taunts[noCount] || 'no';
+  });
+
+  yesBtn.addEventListener('click', () => {
+    localStorage.setItem(STORAGE_KEY, 'y');
+    stage.innerHTML = `<div class="celebrate">yay ✨<p>can\'t wait &lt;3</p></div>`;
+    confetti();
+    setTimeout(selfDestruct, 15000);
+  });
+
+  function selfDestruct() {
+    localStorage.setItem(STORAGE_KEY, 'x');
+    document.body.classList.add('gone');
+    document.title = '';
+    setTimeout(() => { stage.innerHTML = ''; }, 900);
+  }
+
+  function confetti() {
+    const colors = ['#ff6b6b','#ffd93d','#6bcf7f','#4d96ff','#c589e8'];
+    for (let i = 0; i < 80; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[i % colors.length];
+      c.style.animationDuration = (2 + Math.random() * 2) + 's';
+      c.style.animationDelay = (Math.random() * 0.5) + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5000);
+    }
+  }
+</script>
+</body>
+</html>
