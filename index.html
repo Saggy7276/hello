@@ -158,26 +158,75 @@
   }
 
   /* ── button ── */
-  .btn {
-    display: inline-block;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 400;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    padding: 0.8em 2.4em;
-    border: 1px solid rgba(212, 160, 83, 0.4);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--warm);
-    cursor: pointer;
-    transition: all 0.5s ease;
+  .btn-wrap {
     opacity: 0;
     animation: fadeIn 2s ease forwards 3.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px; height: 70px;
+    border: none;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #e85a6f, #c4405a);
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.3s ease;
+    animation: heartbeat 1.8s ease-in-out infinite 3.5s;
+    box-shadow: 0 0 20px rgba(232, 90, 111, 0.3),
+                0 0 50px rgba(232, 90, 111, 0.15);
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(232, 90, 111, 0.35);
+    animation: ring-pulse 2.5s ease-in-out infinite 3.5s;
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    border: 1px solid rgba(232, 90, 111, 0.15);
+    animation: ring-pulse 2.5s ease-in-out infinite 4s;
   }
   .btn:hover {
-    background: var(--warm);
-    color: var(--bg);
-    border-color: var(--warm);
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(232, 90, 111, 0.5),
+                0 0 60px rgba(232, 90, 111, 0.25);
+  }
+  .btn:active { transform: scale(0.95); }
+  .btn-hint {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: rgba(200, 184, 168, 0.5);
+    letter-spacing: 0.12em;
+    animation: hint-fade 2.5s ease-in-out infinite 4s;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15%      { transform: scale(1.12); }
+    30%      { transform: scale(1); }
+    45%      { transform: scale(1.08); }
+    60%      { transform: scale(1); }
+  }
+  @keyframes ring-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50%      { transform: scale(1.15); opacity: 0; }
+  }
+  @keyframes hint-fade {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 0.7; }
   }
 
   /* ── after click ── */
@@ -354,7 +403,10 @@
       Some people leave this world<br>
       but never leave our hearts.
     </div>
-    <button class="btn" id="openBtn">🤍</button>
+    <div class="btn-wrap">
+      <button class="btn" id="openBtn">🤍</button>
+      <span class="btn-hint">tap to light a prayer</span>
+    </div>
   </div>
 
 <script>
