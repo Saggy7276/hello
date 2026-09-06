@@ -3,177 +3,410 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>hi :)</title>
+<title>For You</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #fdf6ee;
-    --ink: #3a1f2b;
-    --coral: #ff6b6b;
-    --coral-dark: #e85555;
-    --soft: #c9a99b;
+    --bg: #1a1520;
+    --warm: #d4a053;
+    --glow: #f5c86e;
+    --soft-text: #c8b8a8;
+    --white: #f0e8df;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body {
     background: var(--bg);
-    color: var(--ink);
-    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
     display: flex; align-items: center; justify-content: center;
-    padding: 2rem; overflow: hidden;
-    transition: background 0.9s ease;
-  }
-  .stage {
-    text-align: center;
-    max-width: 90vw;
-    transition: opacity 0.7s ease;
-  }
-  .question {
-    font-family: 'Caveat', cursive;
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 3rem;
-    color: var(--ink);
-  }
-  .buttons {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    min-height: 120px;
-  }
-  button {
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    padding: 0.9em 2.2em;
-    border: none;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
-                opacity 0.4s ease,
-                font-weight 0.3s ease;
-    box-shadow: 0 4px 14px rgba(58, 31, 43, 0.15);
-  }
-  #yes {
-    background: var(--coral);
-    color: white;
-    font-size: 1.25rem;
-  }
-  #yes:hover { background: var(--coral-dark); }
-  #no {
-    background: transparent;
-    color: var(--ink);
-    font-size: 1.25rem;
-    border: 1.5px solid var(--ink);
-    box-shadow: none;
-  }
-  #no:hover { opacity: 0.7; }
-
-  .celebrate {
-    font-family: 'Caveat', cursive;
-    font-size: clamp(3rem, 10vw, 6rem);
-    color: var(--coral);
-    font-weight: 700;
-  }
-  .celebrate p {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.25rem;
-    margin-top: 1rem;
-    color: var(--ink);
-    font-weight: 400;
+    flex-direction: column;
+    padding: 1.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
-  /* self-destruct: blank page, no trace visible */
-  body.gone { background: white; }
-  body.gone .stage { opacity: 0; pointer-events: none; }
-
-  @keyframes fall {
-    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  .page { 
+    text-align: center; 
+    max-width: 560px; 
+    width: 100%;
+    padding: 1rem 0 2rem;
   }
-  .confetti {
-    position: fixed;
-    width: 10px; height: 14px;
-    top: -20px;
+
+  /* ── candle ── */
+  .candle-wrap {
+    display: flex; justify-content: center;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 0.3s;
+  }
+  .candle {
+    position: relative;
+    width: 40px; height: 120px;
+    background: linear-gradient(to bottom, #f5ecd7, #e8d5b0, #d4bc8a);
+    border-radius: 4px 4px 6px 6px;
+    box-shadow: 0 0 30px rgba(245, 200, 110, 0.15);
+  }
+  .candle::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 14px;
+    background: linear-gradient(to top, #222, #555);
+    border-radius: 1px;
+  }
+  .flame-group {
+    position: absolute;
+    top: -48px; left: 50%; transform: translateX(-50%);
+    width: 20px; height: 40px;
+  }
+  .flame {
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 32px;
+    background: radial-gradient(ellipse at 50% 90%, #fff 0%, #ffe87c 20%, #ffb830 45%, #ff8c00 70%, transparent 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 0.8s ease-in-out infinite alternate;
+    filter: blur(0.5px);
+  }
+  .flame-inner {
+    position: absolute;
+    bottom: 2px; left: 50%; transform: translateX(-50%);
+    width: 6px; height: 18px;
+    background: radial-gradient(ellipse at 50% 85%, #fff 0%, #fffbe6 40%, #ffe87c 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker-inner 1.2s ease-in-out infinite alternate;
+  }
+  .candle-glow {
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(245,200,110,0.18) 0%, rgba(245,200,110,0.05) 40%, transparent 70%);
     pointer-events: none;
-    animation: fall linear forwards;
-    border-radius: 2px;
+    animation: glow-pulse 3s ease-in-out infinite;
   }
+  .wax-drip {
+    position: absolute;
+    width: 6px; height: 12px;
+    background: #e8d5b0;
+    border-radius: 0 0 4px 4px;
+    right: 4px; top: 20px;
+  }
+  @keyframes flicker {
+    0%   { height: 32px; width: 14px; opacity: 1; }
+    25%  { height: 30px; width: 13px; opacity: 0.95; }
+    50%  { height: 34px; width: 15px; opacity: 1; }
+    75%  { height: 29px; width: 12px; opacity: 0.92; }
+    100% { height: 33px; width: 14px; opacity: 1; }
+  }
+  @keyframes flicker-inner {
+    0%   { height: 18px; opacity: 0.9; }
+    50%  { height: 20px; opacity: 1; }
+    100% { height: 16px; opacity: 0.85; }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+    50%      { opacity: 1; transform: translateX(-50%) scale(1.05); }
+  }
+
+  /* ── mom & daughter illustration ── */
+  .illustration {
+    margin: 0 auto 2.5rem;
+    opacity: 0;
+    animation: fadeIn 2.5s ease forwards 1s;
+  }
+  .illustration svg {
+    max-width: 280px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(245, 200, 110, 0.1));
+  }
+
+  /* ── text ── */
+  .message {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 1.8s;
+  }
+  .message em {
+    font-style: italic;
+    color: var(--glow);
+  }
+  .divider {
+    width: 40px; height: 1px;
+    background: var(--warm);
+    margin: 0 auto 1.5rem;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 2.2s;
+  }
+  .sub {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--soft-text);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 2.6s;
+  }
+
+  /* ── button ── */
+  .btn {
+    display: inline-block;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    padding: 0.8em 2.4em;
+    border: 1px solid rgba(212, 160, 83, 0.4);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--warm);
+    cursor: pointer;
+    transition: all 0.5s ease;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 3.2s;
+  }
+  .btn:hover {
+    background: var(--warm);
+    color: var(--bg);
+    border-color: var(--warm);
+  }
+
+  /* ── after click ── */
+  .after {
+    opacity: 0;
+    animation: fadeIn 2.5s ease forwards;
+  }
+  .after-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .after-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.3rem, 4vw, 1.9rem);
+    color: var(--white);
+    line-height: 1.55;
+  }
+
+  /* ── floating particles ── */
+  @keyframes float-up {
+    0%   { transform: translateY(0) scale(1); opacity: 0; }
+    10%  { opacity: 0.5; }
+    80%  { opacity: 0.3; }
+    100% { transform: translateY(-110vh) scale(0.5); opacity: 0; }
+  }
+  .particle {
+    position: fixed;
+    bottom: -20px;
+    pointer-events: none;
+    font-size: 0.9rem;
+    animation: float-up linear forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* subtle background stars */
+  .stars {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.7; }
+  }
+  .page { position: relative; z-index: 1; }
 </style>
 </head>
 <body>
-  <div class="stage" id="stage">
-    <h1 class="question"> Can you Please download me a Reseach Paper Poonam?</h1>
-    <div class="buttons">
-      <button id="yes">yes</button>
-      <button id="no">no</button>
+
+  <!-- subtle stars background -->
+  <div class="stars" id="stars"></div>
+
+  <div class="page" id="stage">
+
+    <!-- burning candle -->
+    <div class="candle-wrap">
+      <div class="candle">
+        <div class="candle-glow"></div>
+        <div class="flame-group">
+          <div class="flame"></div>
+          <div class="flame-inner"></div>
+        </div>
+        <div class="wax-drip"></div>
+      </div>
     </div>
+
+    <!-- mother & daughter illustration -->
+    <div class="illustration">
+      <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- warm ground glow -->
+        <ellipse cx="150" cy="210" rx="120" ry="10" fill="rgba(212,160,83,0.08)"/>
+
+        <!-- mother figure -->
+        <g opacity="0.85">
+          <!-- dress / body -->
+          <path d="M120,210 L108,150 Q105,130 110,120 L115,105 Q118,95 125,92 
+                   L130,90 Q135,88 140,90 L145,95 Q148,100 148,110 
+                   L150,130 Q152,145 148,160 L140,210 Z" 
+                fill="url(#momGrad)" />
+          <!-- head -->
+          <circle cx="132" cy="78" r="16" fill="#d4a880"/>
+          <!-- hair -->
+          <path d="M118,75 Q116,60 125,55 Q132,50 140,55 Q148,60 146,75 
+                   Q148,70 145,65 Q140,58 132,55 Q124,58 120,65 Z" 
+                fill="#2a1a10"/>
+          <path d="M146,75 Q150,80 148,90 Q147,85 145,80 Z" fill="#2a1a10"/>
+          <!-- gentle smile -->
+          <path d="M127,82 Q132,86 137,82" stroke="#8a6040" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <!-- eye -->
+          <ellipse cx="128" cy="76" rx="1.5" ry="1.8" fill="#3a2a1a"/>
+          <!-- arm reaching toward daughter -->
+          <path d="M145,105 Q155,100 168,98 Q175,97 178,100" 
+                stroke="#d4a880" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <!-- other arm -->
+          <path d="M112,115 Q105,120 100,130" 
+                stroke="#d4a880" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <!-- sari drape -->
+          <path d="M115,105 Q110,115 108,130 Q106,140 108,150" 
+                stroke="rgba(245,200,110,0.3)" stroke-width="2" fill="none"/>
+        </g>
+
+        <!-- daughter figure (smaller, playful) -->
+        <g opacity="0.85">
+          <!-- dress -->
+          <path d="M185,210 L178,165 Q176,155 180,148 L183,140 
+                   Q186,135 190,134 L195,133 Q200,134 203,138 
+                   L205,145 Q207,155 205,165 L200,210 Z" 
+                fill="url(#childGrad)" />
+          <!-- head -->
+          <circle cx="193" cy="122" r="13" fill="#d4a880"/>
+          <!-- pigtails -->
+          <circle cx="182" cy="115" r="5" fill="#2a1a10"/>
+          <circle cx="204" cy="115" r="5" fill="#2a1a10"/>
+          <path d="M180,118 Q178,110 182,108 Q186,106 188,112" fill="#2a1a10"/>
+          <path d="M206,118 Q208,110 204,108 Q200,106 198,112" fill="#2a1a10"/>
+          <!-- hair top -->
+          <path d="M182,120 Q180,110 186,107 Q193,104 200,107 Q206,110 204,120" fill="#2a1a10"/>
+          <!-- happy face -->
+          <path d="M188,126 Q193,131 198,126" stroke="#8a6040" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="189" cy="121" rx="1.3" ry="1.5" fill="#3a2a1a"/>
+          <ellipse cx="197" cy="121" rx="1.3" ry="1.5" fill="#3a2a1a"/>
+          <!-- arm reaching toward mom -->
+          <path d="M180,145 Q175,138 170,130 Q165,125 160,120" 
+                stroke="#d4a880" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <!-- other arm (raised playfully) -->
+          <path d="M205,142 Q212,135 215,125 Q217,120 218,115" 
+                stroke="#d4a880" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <!-- hand up with joy -->
+          <circle cx="218" cy="113" r="3.5" fill="#d4a880"/>
+        </g>
+
+        <!-- connecting hands / touch point -->
+        <circle cx="164" cy="108" r="4" fill="rgba(245,200,110,0.25)"/>
+        <circle cx="164" cy="108" r="8" fill="rgba(245,200,110,0.08)"/>
+
+        <!-- small hearts floating between them -->
+        <g opacity="0.5">
+          <text x="155" y="85" font-size="10" fill="#f5c86e" opacity="0.6">♥</text>
+          <text x="170" y="75" font-size="7" fill="#f5c86e" opacity="0.4">♥</text>
+          <text x="145" y="70" font-size="8" fill="#f5c86e" opacity="0.5">♥</text>
+        </g>
+
+        <!-- ground line -->
+        <line x1="70" y1="210" x2="230" y2="210" stroke="rgba(212,160,83,0.15)" stroke-width="0.5"/>
+
+        <defs>
+          <linearGradient id="momGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#b8445a"/>
+            <stop offset="100%" stop-color="#8a2040"/>
+          </linearGradient>
+          <linearGradient id="childGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8a040"/>
+            <stop offset="100%" stop-color="#d48830"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- message -->
+    <div class="message">
+      Thinking of you today, Poonam.<br>
+      Your <em> Neha Aai</em> is lovingly remembered.
+    </div>
+    <div class="divider"></div>
+    <div class="sub">
+      Some people leave this world<br>
+      but never leave our hearts.
+    </div>
+    <button class="btn" id="openBtn">🤍</button>
   </div>
 
 <script>
-  const params = new URLSearchParams(location.search);
-  const linkId = params.get('id') || 'default';
-  const STORAGE_KEY = 'msg_v1_' + linkId;
-  const MAX_NO = 6;
+  // stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 5) + 's';
+    s.style.width = s.style.height = (1 + Math.random() * 2) + 'px';
+    starsEl.appendChild(s);
+  }
+
+  // button
   const stage = document.getElementById('stage');
-  const yesBtn = document.getElementById('yes');
-  const noBtn  = document.getElementById('no');
-
-  // If this browser has already answered or hit the limit, show nothing.
-  if (localStorage.getItem(STORAGE_KEY)) {
-    document.body.classList.add('gone');
-    document.title = '';
-  }
-
-  let noCount = 0;
-  let yesScale = 1;
-  const taunts = ['no', 'you sure?', 'reeeally?', 'Asa karnar aata', 'Bass kay',"You don't have any options"];
-
-  noBtn.addEventListener('click', () => {
-    noCount++;
-    if (noCount >= MAX_NO) { selfDestruct(); return; }
-
-    // Yes grows and gets bolder each refusal
-    yesScale += 0.4;
-    yesBtn.style.transform = `scale(${yesScale})`;
-    yesBtn.style.fontWeight = '700';
-
-    // No shrinks and fades
-    const shrink = Math.max(0.4, 1 - noCount * 0.15);
-    noBtn.style.transform = `scale(${shrink})`;
-    noBtn.style.opacity = Math.max(0.25, 1 - noCount * 0.18);
-    noBtn.textContent = taunts[noCount] || 'no';
-    if (noCount === MAX_NO - 1) noBtn.style.display = 'none';
+  document.getElementById('openBtn').addEventListener('click', () => {
+    stage.innerHTML = `
+      <div class="candle-wrap" style="animation:none;opacity:1;">
+        <div class="candle">
+          <div class="candle-glow"></div>
+          <div class="flame-group">
+            <div class="flame"></div>
+            <div class="flame-inner"></div>
+          </div>
+          <div class="wax-drip"></div>
+        </div>
+      </div>
+      <div class="after">
+        <div class="after-icon">🕊️</div>
+        <div class="after-text">
+          She raised someone wonderful.<br>
+          That's a legacy that lives on forever.
+        </div>
+      </div>
+    `;
+    releaseParticles();
   });
 
-  yesBtn.addEventListener('click', () => {
-    localStorage.setItem(STORAGE_KEY, 'y');
-    stage.innerHTML = `<div class="celebrate">yay ✨<p>can\'t wait 💛</p></div>`;
-    confetti();
-    setTimeout(selfDestruct, 25000);
-  });
-
-  function selfDestruct() {
-    localStorage.setItem(STORAGE_KEY, 'x');
-    document.body.classList.add('gone');
-    document.title = '';
-    setTimeout(() => { stage.innerHTML = ''; }, 1900);
-  }
-
-  function confetti() {
-    const colors = ['#ff6b6b','#ffd93d','#6bcf7f','#4d96ff','#c589e8'];
-    for (let i = 0; i < 80; i++) {
-      const c = document.createElement('div');
-      c.className = 'confetti';
-      c.style.left = Math.random() * 100 + 'vw';
-      c.style.background = colors[i % colors.length];
-      c.style.animationDuration = (2 + Math.random() * 2) + 's';
-      c.style.animationDelay = (Math.random() * 0.5) + 's';
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 5000);
+  function releaseParticles() {
+    const symbols = ['🤍', '🕊️', '✦', '·', '🤍'];
+    for (let i = 0; i < 25; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.textContent = symbols[i % symbols.length];
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (5 + Math.random() * 5) + 's';
+      p.style.animationDelay = (Math.random() * 4) + 's';
+      p.style.fontSize = (0.6 + Math.random() * 0.6) + 'rem';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 14000);
     }
   }
 </script>
